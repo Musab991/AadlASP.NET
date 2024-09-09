@@ -1,0 +1,33 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\XIGMATEK\\Documents\\Project\\Bl\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\BusinessLib.bundle.scp.css",
+      "PackagePath": "staticwebassets\\BusinessLib.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\XIGMATEK\\Documents\\Project\\Bl\\wwwroot\\background.png",
+      "PackagePath": "staticwebassets\\background.png"
+    },
+    {
+      "Id": "C:\\Users\\XIGMATEK\\Documents\\Project\\Bl\\wwwroot\\exampleJsInterop.js",
+      "PackagePath": "staticwebassets\\exampleJsInterop.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.BusinessLib.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.BusinessLib.props",
+      "PackagePath": "build\\BusinessLib.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.BusinessLib.props",
+      "PackagePath": "buildMultiTargeting\\BusinessLib.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.BusinessLib.props",
+      "PackagePath": "buildTransitive\\BusinessLib.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
