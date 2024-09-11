@@ -153,4 +153,19 @@
   <data name="String1" xml:space="preserve">
     <value>dsas</value>
   </data>
+  <data name="lbCity" xml:space="preserve">
+    <value>المدينة</value>
+  </data>
+  <data name="lbPersonTitle" xml:space="preserve">
+    <value>البيانات الشخصية</value>
+  </data>
+  <data name="lbPhone" xml:space="preserve">
+    <value>الهاتف</value>
+  </data>
+  <data name="lbEmail" xml:space="preserve">
+    <value>البريد الالكتروني</value>
+  </data>
+  <data name="lbBirthday" xml:space="preserve">
+    <value>تاريخ الميلاد</value>
+  </data>
 </root>

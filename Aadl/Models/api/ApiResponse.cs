@@ -10,6 +10,5 @@
         public string StatusCode { get; set; }
 
 
-
     }
 }

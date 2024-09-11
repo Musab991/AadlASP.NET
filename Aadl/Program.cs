@@ -23,7 +23,6 @@ builder.Services.AddScoped<ICRUD<TbPerson>, clsPerson>();
 builder.Services.AddScoped<ICRUD<TbPractitioner>, clsPractitioner>();
 builder.Services.AddScoped<IPractitionerService<TbCaseType>, clsPractitionerService>();
 
-builder.Services.AddHttpClient<Aadl.Controllers.PractitionerController>();
 var app = builder.Build();
 
     // Configure the HTTP request pipeline.

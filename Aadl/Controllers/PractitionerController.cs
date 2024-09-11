@@ -12,16 +12,16 @@ namespace Aadl.Controllers
 {
     public class PractitionerController : Controller
     {
-        private readonly HttpClient _httpClient;
 
         private readonly ICRUD<TbPractitioner> _clsPractitioner;
+        private readonly ICRUD<TbCountry> _clsCountry;
         private readonly IPractitionerService<TbCaseType> _clsPractitionerServices;
         public PractitionerController(ICRUD<TbPractitioner>practitionerService01,
-             IPractitionerService<TbCaseType> practitionerService02, HttpClient httpClient)
+             IPractitionerService<TbCaseType> practitionerService02, ICRUD<TbCountry> counrtyService)
         {
             _clsPractitioner = practitionerService01;
             _clsPractitionerServices= practitionerService02;
-            _httpClient = httpClient;
+            _clsCountry = counrtyService;
 
         }
         public IActionResult Index()
@@ -76,7 +76,7 @@ namespace Aadl.Controllers
             try
             {
 
-                var practitioner=_clsPractitioner.GetById(entityId);
+                var practitioner = _clsPractitioner.GetById(entityId);
 
                 ////map to edit model
                 //PractitionerEditViewModel model = new PractitionerEditViewModel()
@@ -88,47 +88,32 @@ namespace Aadl.Controllers
                 //     PractitionerId=entityId,
                 //}
 
-                ViewBag.PractitionerCases = _clsPractitionerServices.GetAll(2);
+                ViewBag.PractitionerCases = _clsPractitionerServices.GetAll(entityId);
 
-                var response = await _httpClient.GetAsync("https://localhost:7055/api/Values/Countries");
-                response.EnsureSuccessStatusCode();
-
-                var content = await response.Content.ReadAsStringAsync();
-                var apiResponse =JsonSerializer.Deserialize<ApiResponse>(content);
-
-                // Check for errors in the API response
-
-                if (apiResponse != null && apiResponse.Errors != null)
+                IEnumerable<TbCountry> lst = new List<TbCountry>
                 {
-
-                    var countries = JsonSerializer.Deserialize<List<TbCountry>>(apiResponse.Data.ToString());
-                    if (countries != null)
-                    {
-                        ViewBag.Countries= countries;
-                    }
-
-                }
-                else
-                {
-
-                    // Handle errors accordingly
-                    ViewBag.ErrorMessages = apiResponse.Errors;
-                    return View("Error"); // or handle as needed
-                }
+                    new TbCountry { Id = 1, Name = "s" }
+                };
+                //ViewBag.Countries = _clsCountry.GetAll().ToList();
+                ViewBag.Countries = lst;
 
                 PractitionerEditViewModel model = new PractitionerEditViewModel()
                 {
                     FullName = "مصعب محمود علي عطية",
                     IsActive = true,
-                    PractitionerCases = new List<int>() { 3 },
+                    PractitionerCases = new List<int>() { 1, 3 },
                     PractitionerId = 1,
-                    PractitionerTypeId = 2,
+                    PractitionerTypeId = 1,
                     SubscriptionTypeId = 1,
                     SubscriptionWayId = 1,
+                    PersonId = 4,
+                    CountryId = 1,
+                    City = "المدينة",
+                    Phone="00962780852829",
+                    Birthday = new DateTime(1997, 03, 31),
                     RegulatorMembership = "121312",
                     ShariaLicenseNumber = string.Empty
                 };
-       
 
                 ViewBag.Title = "أضافة و تعديل بيانات المزاول";
                 ViewBag.SubTitle = "نظامي";
@@ -149,8 +134,7 @@ namespace Aadl.Controllers
         {
             //I could send it with viewBag[RegulatorMemberShip]
             if (ModelState.IsValid) {
-
-
+                //busines layer save through ef in database transaction method...
                 // Handle the model
                 // Example: Save or update the model data
                 return RedirectToAction("Index");
