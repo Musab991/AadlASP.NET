@@ -59,7 +59,46 @@ namespace Aadl.Resources {
                 resourceCulture = value;
             }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to الهاتف.
+        /// </summary>
+        public static string lbPhone
+        {
+            get
+            {
+                return ResourceManager.GetString("lbPhone", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to البريد الالكتروني.
+        /// </summary>
+        public static string lbEmail
+        {
+            get
+            {
+                return ResourceManager.GetString("lbEmail", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to المدينة.
+        /// </summary>
+        public static string lbCity
+        {
+            get
+            {
+                return ResourceManager.GetString("lbCity", resourceCulture);
+            }
+        }
+        /// <summary>
+        ///   Looks up a localized string similar to تاريخ الميلاد.
+        /// </summary>
+        public static string lbBirthday
+        {
+            get
+            {
+                return ResourceManager.GetString("lbBirthday", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to عمليات.
         /// </summary>
@@ -68,7 +107,17 @@ namespace Aadl.Resources {
                 return ResourceManager.GetString("lbActions", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to الدولة.
+        /// </summary>
+        public static string lbCountry
+        {
+            get
+            {
+                return ResourceManager.GetString("lbCountry", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to New.
         /// </summary>
@@ -88,7 +137,7 @@ namespace Aadl.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete.
+        ///   Looks up a localized string similar to حذف.
         /// </summary>
         public static string lbDelete {
             get {
@@ -97,7 +146,7 @@ namespace Aadl.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Edit.
+        ///   Looks up a localized string similar to تعديل.
         /// </summary>
         public static string lbEdit {
             get {
@@ -131,7 +180,16 @@ namespace Aadl.Resources {
                 return ResourceManager.GetString("lbNo", resourceCulture);
             }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to البيانات الشخصية.
+        /// </summary>
+        public static string lbPersonTitle
+        {
+            get
+            {
+                return ResourceManager.GetString("lbPersonTitle", resourceCulture);
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>

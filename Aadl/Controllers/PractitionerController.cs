@@ -3,20 +3,26 @@ using Aadl.Models.PractitionerViewModels;
 using BusinessLib.Bl.Contract;
 using Domains.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics.Metrics;
+using System.Net.Http;
 using System.Numerics;
+using System.Text.Json;
 
 namespace Aadl.Controllers
 {
     public class PractitionerController : Controller
     {
+        private readonly HttpClient _httpClient;
 
         private readonly ICRUD<TbPractitioner> _clsPractitioner;
         private readonly IPractitionerService<TbCaseType> _clsPractitionerServices;
         public PractitionerController(ICRUD<TbPractitioner>practitionerService01,
-             IPractitionerService<TbCaseType> practitionerService02)
+             IPractitionerService<TbCaseType> practitionerService02, HttpClient httpClient)
         {
             _clsPractitioner = practitionerService01;
             _clsPractitionerServices= practitionerService02;
+            _httpClient = httpClient;
+
         }
         public IActionResult Index()
         {
@@ -65,7 +71,7 @@ namespace Aadl.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int entityId)
+        public async Task<IActionResult>Edit(int entityId)
         {
             try
             {
@@ -82,19 +88,45 @@ namespace Aadl.Controllers
                 //     PractitionerId=entityId,
                 //}
 
-                ViewBag.PractitionerCases = _clsPractitionerServices.GetAll(1);
-              
-                PractitionerEditViewModel model = new RegulatorEditViewModel()
+                ViewBag.PractitionerCases = _clsPractitionerServices.GetAll(2);
+
+                var response = await _httpClient.GetAsync("https://localhost:7055/api/Values/Countries");
+                response.EnsureSuccessStatusCode();
+
+                var content = await response.Content.ReadAsStringAsync();
+                var apiResponse =JsonSerializer.Deserialize<ApiResponse>(content);
+
+                // Check for errors in the API response
+
+                if (apiResponse != null && apiResponse.Errors != null)
+                {
+
+                    var countries = JsonSerializer.Deserialize<List<TbCountry>>(apiResponse.Data.ToString());
+                    if (countries != null)
+                    {
+                        ViewBag.Countries= countries;
+                    }
+
+                }
+                else
+                {
+
+                    // Handle errors accordingly
+                    ViewBag.ErrorMessages = apiResponse.Errors;
+                    return View("Error"); // or handle as needed
+                }
+
+                PractitionerEditViewModel model = new PractitionerEditViewModel()
                 {
                     FullName = "مصعب محمود علي عطية",
                     IsActive = true,
-                    PractitionerCases = new List<int>() {3},
-                    PractitionerId=1,
-                    PractitionerTypeId=1,
-                    SubscriptionTypeId=1,
-                    SubscriptionWayId=1,
-                    RegulatorMembership="121312"
-                    
+                    PractitionerCases = new List<int>() { 3 },
+                    PractitionerId = 1,
+                    PractitionerTypeId = 2,
+                    SubscriptionTypeId = 1,
+                    SubscriptionWayId = 1,
+                    RegulatorMembership = "121312",
+                    ShariaLicenseNumber = string.Empty
                 };
        
 
@@ -104,8 +136,9 @@ namespace Aadl.Controllers
                 return View(model);
             
             }
-            catch (Exception ex) { 
-            
+            catch (Exception ex) {
+
+                RedirectToAction("Index");
                 throw new ArgumentNullException(nameof(entityId));
             }
         }
@@ -114,10 +147,16 @@ namespace Aadl.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(PractitionerEditViewModel model)
         {
-       
+            //I could send it with viewBag[RegulatorMemberShip]
+            if (ModelState.IsValid) {
 
 
-            return View();
+                // Handle the model
+                // Example: Save or update the model data
+                return RedirectToAction("Index");
+            }
+            // If the model state is invalid, return the view with the current model
+            return View(model);
         }
 
         [HttpPost]

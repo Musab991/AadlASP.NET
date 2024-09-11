@@ -32,7 +32,7 @@
 
 }
 
-@model Aadl.Models.PractitionerViewModels.RegulatorEditViewModel
+@model Aadl.Models.PractitionerViewModels.PractitionerEditViewModel
 <div class="page-body">
 
     <!-- Container-fluid starts-->
@@ -74,50 +74,84 @@
                             <li class="nav-item"><a class="nav-link" id="permission-tabs" data-toggle="tab" href="#permission" role="tab" aria-controls="permission" aria-selected="false" data-original-title="" title="">Permission</a></li>
                         </ul>
                                 <form asp-controller="practitioner" asp-action="edit" method="post"  class="needs-validation user-add">
-                                 <input type="hidden" name="PractitionerId" value="@Model.PractitionerId"/>
+                                <input type="hidden" name="PractitionerId" value="@Model.PractitionerId"/>
                                 <input type="hidden" name="PractitionerTypeId" value="@Model.PractitionerTypeId" />
                                 <input type="hidden" name="UpdatedByUserId" value="@Model.UpdatedByUserId" />
+                                @Html.HiddenFor(m=>m.PersonId)
                                 @Html.HiddenFor(m => m.LastUpdateDate)
 
                                     <div asp-validation-summary="All" class="text-danger"></div>
                       
                                     
-                                    <div class="tab-content" id="myTabContent">
-                            
-                                        <div class="tab-pane fade active show" id="account" role="tabpanel" aria-labelledby="account-tab">
+                                    <div class="tab-content" id="Info">
+
+                                <div class="tab-pane fade active show" id="PractitionerInfo" role="tabpanel" aria-labelledby="practitioner-tab">
 
                                     <h4>@practitionerTitle</h4>
 
 
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbPractitionerCases</label>
+                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbPractitionerCases</label><span>*</span>
                                         @Html.ListBoxFor(Model => Model.PractitionerCases,
                                                  new MultiSelectList(ViewBag.PractitionerCases, "Id", "Name"),
                                                  new { @class = "custom-select col-md-7", multiple = "multiple", id = "PractitionerCases-dropdown" })
+
+                                        <span asp-validation-for="PractitionerCases" class="text-danger"> </span>
+
                                     </div>
 
 
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbSubscriptionType</label>
+                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbSubscriptionType</label><span>*</span>
                                         @Html.DropDownListFor(Model => Model.SubscriptionTypeId,
                                                  new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionTypeEnum>(), "Value", "Text"),
                                                  @Aadl.Resources.ResPractitioner.lbSubscriptionType,
                                                  new { @class = "custom-select col-md-7" })
+                                        <span asp-validation-for="SubscriptionTypeId" class="text-danger"> </span>
+
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbSubscriptionWay</label>
+                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.ResPractitioner.lbSubscriptionWay</label><span>*</span>
                                         @Html.DropDownListFor(Model => Model.SubscriptionWayId,
                                                  new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionWayEnum>(), "Value", "Text"),
                                                  @Aadl.Resources.ResPractitioner.lbSubscriptionWay,
                                                  new { @class = "custom-select col-md-7" })
-                                    </div>
+                                        <span asp-validation-for="SubscriptionWayId" class="text-danger"> </span>
 
-                                    <div class="form-group row">
-                                        <label for="@Model.RegulatorMembership" class="col-xl-3 col-md-4"><span>*</span>@Aadl.Resources.ResPractitioner.lbMembershipNumber</label>
-                                        <input asp-for="RegulatorMembership" class="form-control col-xl-7 col-md-7" id="regulatorMemberShipInput" type="text" required="">
                                     </div>
-                                 
+                                    @{
+
+
+                                        if (Model.PractitionerTypeId==1 )
+                                        {
+                                        
+                                        <!-- Regulator specific fields -->
+                                        <div class="form-group row">
+                                                <label for="RegulatorMembership" class="col-xl-3 col-md-4">
+                                                <span>*</span>@Aadl.Resources.ResPractitioner.lbMembershipNumber
+                                            </label>
+                                                <input asp-for="RegulatorMembership" class="form-control col-xl-7 col-md-7" id="regulatorMemberShipInput" type="text" required />
+                                                <span asp-validation-for="RegulatorMembership" class="text-danger"> </span>
+
+                                            </div>
+                                        }
+                                        else if (Model.PractitionerTypeId == 2)
+                                        {
+                                            <!-- Sharia specific fields -->
+                                            <div class="form-group row">
+                                                <label for="ShariaLicenseNumber" class="col-xl-3 col-md-4">
+                                                    <span>*</span>@Aadl.Resources.ResPractitioner.lbShariaLicenseNumber
+                                                </label>
+                                                <input asp-for="ShariaLicenseNumber" class="form-control col-xl-7 col-md-7" id="regulatorMemberShipInput" type="text" required />
+                                                <span asp-validation-for="ShariaLicenseNumber" class="text-danger"> </span>
+
+                                            </div>
+                                        }
+
+                                        }
+
+                              
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-md-4">@Aadl.Resources.General.lbIsActive</label>
                                         <div class="checkbox checkbox-primary col-xl-9 col-md-8">
@@ -131,153 +165,55 @@
 
 
                             </div>
-                            <div class="tab-pane fade" id="permission" role="tabpanel" aria-labelledby="permission-tabs">
-                                  <h4>Permission</h4>
-                                    <div class="permission-block">
-                                        <div class="attribute-blocks">
-                                            <h5 class="f-w-600 mb-3">Product Related permition </h5>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Add Product</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani1">
-                                                            <input class="radio_animated" id="edo-ani1" type="radio" name="rdo-ani">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani2">
-                                                            <input class="radio_animated" id="edo-ani2" type="radio" name="rdo-ani" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Update Product</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani3">
-                                                            <input class="radio_animated" id="edo-ani3" type="radio" name="rdo-ani1">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani4">
-                                                            <input class="radio_animated" id="edo-ani4" type="radio" name="rdo-ani1" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Delete Product</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani5">
-                                                            <input class="radio_animated" id="edo-ani5" type="radio" name="rdo-ani2">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani6">
-                                                            <input class="radio_animated" id="edo-ani6" type="radio" name="rdo-ani2" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label class="mb-0 sm-label-radio">Apply Discount</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated pb-0">
-                                                        <label class="d-block mb-0" for="edo-ani7">
-                                                            <input class="radio_animated" id="edo-ani7" type="radio" name="rdo-ani3">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block mb-0" for="edo-ani8">
-                                                            <input class="radio_animated" id="edo-ani8" type="radio" name="rdo-ani3" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="attribute-blocks">
-                                            <h5 class="f-w-600 mb-3">Category Related permition </h5>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Add Category</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani9">
-                                                            <input class="radio_animated" id="edo-ani9" type="radio" name="rdo-ani4">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani10">
-                                                            <input class="radio_animated" id="edo-ani10" type="radio" name="rdo-ani4" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Update Category</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani11">
-                                                            <input class="radio_animated" id="edo-ani11" type="radio" name="rdo-ani5">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani12">
-                                                            <input class="radio_animated" id="edo-ani12" type="radio" name="rdo-ani5" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label>Delete Category</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline mb-0 custom-radio-ml d-flex radio-animated">
-                                                        <label class="d-block" for="edo-ani13">
-                                                            <input class="radio_animated" id="edo-ani13" type="radio" name="rdo-ani6">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block" for="edo-ani14">
-                                                            <input class="radio_animated" id="edo-ani14" type="radio" name="rdo-ani6" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="col-xl-3 col-sm-4">
-                                                    <label class="mb-0 sm-label-radio">Apply discount</label>
-                                                </div>
-                                                <div class="col-xl-9 col-sm-8">
-                                                    <div class="form-group m-checkbox-inline custom-radio-ml d-flex radio-animated pb-0">
-                                                        <label class="d-block mb-0" for="edo-ani15">
-                                                            <input class="radio_animated" id="edo-ani15" type="radio" name="rdo-ani7">
-                                                            Allow
-                                                        </label>
-                                                        <label class="d-block mb-0" for="edo-ani16">
-                                                            <input class="radio_animated" id="edo-ani16" type="radio" name="rdo-ani7" checked="">
-                                                            Deny
-                                                        </label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+
+                                <div class="tab-pane fade active show" id="PersonInfo" role="tabpanel" aria-labelledby="person-tab">
+
+                                    <h4>@Aadl.Resources.General.lbPersonTitle</h4>
+
+
+                                    <div class="form-group row">
+                                        <label for="FullName" class="col-xl-3 col-md-4">
+                                            <span>*</span>@Aadl.Resources.General.lbFullName
+                                        </label>
+                                        <input asp-for="FullName" class="form-control col-xl-7 col-md-7" id="fullNameInput" type="text" required />
+                                        <span asp-validation-for="FullName" class="text-danger"> </span>
+
                                     </div>
-                            </div>
+                                    <div class="form-group row">
+                                        <label for="Phone" class="col-xl-3 col-md-4">
+                                            <span>*</span>@Aadl.Resources.General.lbPhone
+                                        </label>
+                                        <input asp-for="Phone" class="form-control col-xl-7 col-md-7" id="phoneInput" type="tel" required />
+                                        <span asp-validation-for="Phone" class="text-danger"> </span>
+
+                                    </div> 
+                                    <div class="form-group row">
+                                        <label for="Email" class="col-xl-3 col-md-4">
+                                           @Aadl.Resources.General.lbEmail
+                                        </label>
+                                        <input asp-for="Email" class="form-control col-xl-7 col-md-7" id="EmailInput" type="email"  />
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-md-4"> <span>*</span>@Aadl.Resources.General.lbCountry</label>
+                                        @Html.ListBoxFor(Model => Model.CountryId,
+                                                 new MultiSelectList(ViewBag.Countries, "Id", "Name"),
+                                                 new { @class = "custom-select col-md-7", multiple = "multiple", id = "Country-dropdown" })
+                                        <span asp-validation-for="Phone" class="text-danger"> </span>
+
+                                    </div>      
+                                    <div class="form-group row">
+                                        <label for="City" class="col-xl-3 col-md-4">
+                                           @Aadl.Resources.General.lbCity
+                                        </label>
+                                        <input asp-for="City" class="form-control col-xl-7 col-md-7" id="CityInput" type="text" />
+                                    </div>
+
+                                    <div class="form-group row">
+                                        <label class="col-xl-3 col-md-4">@Aadl.Resources.General.lbBirthday</label>
+                                        <input asp-for="Birthday" class="datepicker-here form-control digits col-md-7" type="date" data-language="en">
+                                    </div>
+                                </div>
+                                
                         </div>
                             <div class="pull-right">
                                 <button type="submit" class="btn btn-primary">Save</button>

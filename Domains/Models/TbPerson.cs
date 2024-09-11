@@ -13,11 +13,24 @@ namespace Domains.Models
         public string LastName { get; set; } = null!;
 
         [NotMapped]
-        public string FullName { get
+        public string FullName { 
+            get
             {
                 return
                 FirstName + " " + " " + SecondName + " " + ThirdName + " " + LastName;
-            } }
+            } 
+            set 
+            { 
+                string[] name = value.Split(' ');
+            
+                    FirstName = name[0];
+                    SecondName = name[1];
+                    ThirdName = name[2];
+                    LastName = name[3];
+          
+            }
+       
+        }
 
         [Phone]
         public string Phone { get; set; } =null!;
