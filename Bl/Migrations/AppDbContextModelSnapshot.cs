@@ -34,11 +34,12 @@ namespace BusinessLib.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PractitionerType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PractitionerTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PractitionerTypeId");
 
                     b.ToTable("TbCaseTypes", (string)null);
                 });
@@ -376,7 +377,7 @@ namespace BusinessLib.Migrations
 
                     b.HasIndex("TbCountryId");
 
-                    b.ToTable("TbPeople", (string)null);
+                    b.ToTable("TbPeople");
                 });
 
             modelBuilder.Entity("Domains.Models.TbPractitioner", b =>
@@ -399,9 +400,8 @@ namespace BusinessLib.Migrations
                     b.Property<int?>("PractitionerSpecId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PractitionerType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("PractitionerTypeId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("UpdatedByUserId")
                         .HasColumnType("int");
@@ -413,6 +413,8 @@ namespace BusinessLib.Migrations
 
                     b.HasIndex("PersonId")
                         .IsUnique();
+
+                    b.HasIndex("PractitionerTypeId");
 
                     b.ToTable("TbPractitioners", (string)null);
                 });
@@ -431,18 +433,15 @@ namespace BusinessLib.Migrations
                     b.Property<int>("PractitionerId")
                         .HasColumnType("int");
 
-                    b.Property<string>("PractitionerType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("TbPractitionerId")
-                        .HasColumnType("int");
+                    b.Property<int>("PractitionerTypeId")
+                        .HasColumnType("INT")
+                        .HasColumnName("PractitionerTypeId");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PractitionerId");
 
-                    b.HasIndex("TbPractitionerId");
+                    b.HasIndex("PractitionerTypeId");
 
                     b.ToTable("TbPractitionersCases", (string)null);
                 });
@@ -493,7 +492,33 @@ namespace BusinessLib.Migrations
                     b.HasIndex("PractitionerId")
                         .IsUnique();
 
-                    b.ToTable("TbPractitionerSpec", (string)null);
+                    b.ToTable("TbPractitionerSpec");
+                });
+
+            modelBuilder.Entity("Domains.Models.TbPractitionerType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("PractitionerTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TbPractitionerTypes", (string)null);
+                });
+
+            modelBuilder.Entity("Domains.Models.TbCaseType", b =>
+                {
+                    b.HasOne("Domains.Models.TbPractitionerType", null)
+                        .WithMany()
+                        .HasForeignKey("PractitionerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domains.Models.TbPerson", b =>
@@ -515,6 +540,12 @@ namespace BusinessLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Domains.Models.TbPractitionerType", null)
+                        .WithMany()
+                        .HasForeignKey("PractitionerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("TbPerson");
                 });
 
@@ -526,15 +557,13 @@ namespace BusinessLib.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domains.Models.TbPractitioner", "TbPractitioner")
+                    b.HasOne("Domains.Models.TbPractitionerType", null)
                         .WithMany()
-                        .HasForeignKey("TbPractitionerId")
+                        .HasForeignKey("PractitionerTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("TbCaseType");
-
-                    b.Navigation("TbPractitioner");
                 });
 
             modelBuilder.Entity("Domains.Models.TbPractitionerSpec", b =>

@@ -1,0 +1,118 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+
+    view practitioner
+*@
+@{
+}
+
+@model  List< ViewPractitioner>
+
+
+@section Styles {
+    <!-- Plugin css for this page -->
+    <!-- Plugin css for this page -->
+    <link rel="stylesheet" href="~/Admin/assets/vendors/select2/select2.min.css">
+    <link rel="stylesheet" href="~/Admin/assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css">
+    <!-- End plugin css for this page -->
+    <link rel="stylesheet" href="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css">
+    <!-- End plugin css for this page -->
+    <link rel="stylesheet" href="~/Admin/CustomCssStyles/customStyleSheet.css">
+}
+
+<div class="page-header">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-element active" aria-current="page">Categories</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="card">
+
+    <div class="card-body">
+        <a asp-controller="Trip" asp-action="Edit" asp-area="Admin" type="button" class="btn btn-outline-success btn-fw"> New Item</a>
+        <h4 class="card-title">Data table</h4>
+        <div class="row">
+            @*             <div class="col-6 form-group">
+
+            <label for="selectorCategoryName">@ResAdmin.lblCategoryName</label>
+            <select id="selectCategoryName" asp-items="@(new SelectList(ViewBag.CategoryList,"CategoryId","CategoryName",@selectedCategoryId))"
+            onchange="Search(this)" class="form-control form-control-lg">
+            <option value="0">none</option>
+
+            </select>
+            </div>
+            <div class="col-6 form-group">
+            <label for="selectorItemTypeId">@ResAdmin.lblItemType</label>
+
+            <select id="selectItemTypeId" asp-items="@(new SelectList(ViewBag.ItemTypesList,"ItemTypeId","ItemTypeName",@selectedItemTypeId))"
+            onchange="Search(this)" class="form-control form-control-lg">
+
+            <option value="0">none</option>
+            </select>
+
+            </div> *@
+
+
+            <div class="row-12">
+
+                <table id="order-listing" class="table">
+                    <thead>
+                        <tr>
+                            <th>#Practitioner Id</th>
+                            <th>Practitioner Name</th>
+                            <th>Practitioner type</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Allowed Age</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- content-wrapper ends -->
+@section Scripts {
+
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/assets/vendors/select2/select2.min.js"></script>
+    <script src="~/Admin/assets/vendors/typeahead.js/typeahead.bundle.min.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/assets/js/file-upload.js"></script>
+    <script src="~/Admin/assets/js/typeahead.js"></script>
+    <script src="~/Admin/assets/js/select2.js"></script>
+    <!-- End custom js for this page -->
+    <!-- Plugin js for this page -->
+    <script src="~/Admin/assets/vendors/datatables.net/jquery.dataTables.js"></script>
+    <script src="~/Admin/assets/vendors/datatables.net-bs4/dataTables.bootstrap4.js"></script>
+    <!-- End plugin js for this page -->
+    <!-- Custom js for this page -->
+    <script src="~/Admin/assets/js/data-table.js"></script>
+    <!-- End custom js for this page -->
+    @* <script src="~/Admin/CustomJavascript/ListViewCategoriesJavascript.js"></script>  *@
+    <script>
+
+
+        // //NOT USED ...
+        function Search() {
+            let CategoryId = $("#selectCategoryName").val(); // Get value from Category dropdown
+            let ItemTypeId = $("#selectItemTypeId").val();    // Get value from ItemType dropdown
+
+            // Redirect with both parameters
+            window.location.href = "/admin/Items/Search?elementId1=" + CategoryId + "&elementId2=" + ItemTypeId;
+        }
+
+    </script>
+}

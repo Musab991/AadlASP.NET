@@ -7,3 +7,5 @@ global using static Domains.Utility.Enums;
 global using Domains.Models;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore.Metadata.Builders;
+global using BusinessLib.Bl.Contract;
+global using BusinessLib.Data;

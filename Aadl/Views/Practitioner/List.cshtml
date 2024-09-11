@@ -1,0 +1,126 @@
+﻿@model List<Aadl.Models.PractitionerViewModels.PractitionerListViewModel>
+
+
+@section Styles {
+    <!-- Datatable css-->
+    <link rel="stylesheet" type="text/css" href="~/Admin/assets/css/datatables.css">
+
+}
+
+
+<div class="page-body">
+
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="page-header">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="page-header-left">
+                        <h3>
+                            @Aadl.Resources.ResPractitioner.lbPractitionerListTitle
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <ol class="breadcrumb pull-right">
+                        <li class="breadcrumb-item"><a href="index.html"><i data-feather="home"></i></a></li>
+                        <li class="breadcrumb-item">Vendors</li>
+                        <li class="breadcrumb-item active">Vendor List</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+    <!-- Container-fluid starts-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+                <h5>
+                    @Aadl.Resources.ResPractitioner.lbRegulatorListTitle
+                </h5>
+            </div>
+            <div class="card-body vendor-table">
+                <table class="display" id="basic-1">
+                    <thead>
+                        <tr>
+                            <th>@Aadl.Resources.General.lbFullName</th>
+                            <th>@Aadl.Resources.ResPractitioner.lbPractitionerType</th>
+                            <th>@Aadl.Resources.ResPractitioner.lbRegulatorCases</th>
+                            <th>@Aadl.Resources.ResPractitioner.lbCreatedByUser</th>
+                            <th>@Aadl.Resources.ResPractitioner.lbSubscriptionType</th>
+                            <th>@Aadl.Resources.ResPractitioner.lbSubscriptionWay</th>
+                            <th>@Aadl.Resources.General.lbIsActive</th>
+                            <th>@Aadl.Resources.General.lbActions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var practitioner in @Model)
+                        {
+                            
+                        <tr>
+                      
+                                <td>
+                                    @practitioner.FullName
+                                </td>
+
+                                <td>
+                                    @practitioner.PractitionerType
+                                </td>
+
+                                @if (@practitioner.PractitionerCases.Count == 0)
+                                {
+                                    <td>
+                                        N/A
+                                    </td>
+                                }
+                                else
+                                {
+
+                                    <td>
+                                        <select class="form-select form-select-sm">
+
+                                            @foreach (var practitionerCaseName in @practitioner.PractitionerCases)
+                                            {
+                                                <option>
+                                                    @practitionerCaseName
+                                                </option>
+                                            }
+                                        </select>
+                                    </td>
+                                }
+
+                                <td>@practitioner.CreatedByUser</td>
+
+                                <td>@practitioner.SubscriptionType</td>
+                                <td>@practitioner.SubscriptionWay</td>
+
+                                <td>@practitioner.IsActive</td>
+
+                                <td>
+                                <div>
+                                    <i class="fa fa-edit mr-2 font-success"></i>
+                                    <i class="fa fa-trash font-danger"></i>
+                                </div>
+                            </td>
+                        </tr>
+                        } 
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!-- Container-fluid Ends-->
+
+</div>
+
+
+<!-- content-wrapper ends -->
+@section Scripts {
+    <!-- Datatables js-->
+    <script src="~/Admin/assets/js/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/Admin/assets/js/datatables/custom-basic.js"></script>
+
+}

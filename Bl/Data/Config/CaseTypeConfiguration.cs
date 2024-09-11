@@ -12,14 +12,7 @@ namespace BusinessLib.Data.Config
             builder.ToTable("TbCaseTypes");
 
 
-            builder.Property(p => p.PractitionerType)
-
-             .HasConversion(
-                v => v.ToString(), // Convert enum to string when storing in database
-                 v => (PractitionerTypeEnum)Enum.Parse(typeof(PractitionerTypeEnum), v) // Convert string back to enum when retrieving from database
-             );
-
-
+            builder.Property(p => p.PractitionerTypeId);
 
             //practitioner ----- bridge ----- case type
              builder

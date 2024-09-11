@@ -27,3 +27,4 @@ C:\Users\XIGMATEK\Documents\Project\Bl\obj\Debug\net8.0\refint\BusinessLib.dll
 C:\Users\XIGMATEK\Documents\Project\Bl\obj\Debug\net8.0\BusinessLib.pdb
 C:\Users\XIGMATEK\Documents\Project\Bl\obj\Debug\net8.0\BusinessLib.genruntimeconfig.cache
 C:\Users\XIGMATEK\Documents\Project\Bl\obj\Debug\net8.0\ref\BusinessLib.dll
+C:\Users\XIGMATEK\Documents\Project\Bl\obj\Debug\net8.0\BusinessLib.sourcelink.json
