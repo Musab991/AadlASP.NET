@@ -1,4 +1,6 @@
 ﻿using Domains.Models;
+using Domains.Models.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BusinessLib.Data
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int>
     {
         public virtual DbSet<TbPractitioner>TbPractitioners { get; set; }
         public virtual DbSet<TbCountry>TbCountries { get; set; }
