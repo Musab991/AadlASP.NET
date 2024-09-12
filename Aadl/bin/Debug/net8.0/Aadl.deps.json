@@ -15,6 +15,11 @@
         },
         "runtime": {
           "Aadl.dll": {}
+        },
+        "resources": {
+          "es/Aadl.resources.dll": {
+            "locale": "es"
+          }
         }
       },
       "Azure.Core/1.35.0": {

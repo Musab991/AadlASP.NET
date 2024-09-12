@@ -46,14 +46,15 @@ namespace Domains.Models
         [ValidateNever]
         public int ?UpdateByUserId { get; set; }
         [ValidateNever]
-        public int ?UpdateDate { get; set; }
+        public DateTime ?UpdateDate { get; set; }
         public DateTime? Birthday { get; set; }
         public int CountryId { get; set; }
         public string ? City {  get; set; }
         public virtual TbCountry TbCountry { get; set; }
         public TbPerson()
         {
-            TbCountry = new TbCountry();
+            // Initialize as detached
+            TbCountry = null;
         }
 
 

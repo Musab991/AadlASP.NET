@@ -3,8 +3,8 @@
 
     // Determine the navigation title based on PractitionerTypeId
     string practitionerTitle="";
-    if(Model.PractitionerTypeId !=0)
-    switch (Model.PractitionerTypeId)
+    if(ViewBag.PractitionerTypeId !=0)
+        switch (ViewBag.PractitionerTypeId)
     {
         case 1:
             practitionerTitle = @Aadl.Resources.ResPractitioner.lbRegulator;
@@ -79,8 +79,11 @@
                             <input type="hidden" name="PractitionerId" value="@Model.PractitionerId" />
                             <input type="hidden" name="PractitionerTypeId" value="@Model.PractitionerTypeId" />
                             <input type="hidden" name="UpdatedByUserId" value="@Model.UpdatedByUserId" />
+                            <input type="hidden" name="CreatedByUserId" value="@Model.CreatedByUserId" />
                             @Html.HiddenFor(m => m.PersonId)
                             @Html.HiddenFor(m => m.LastUpdateDate)
+                            @Html.HiddenFor(m => m.IssueDate)
+                            @Html.HiddenFor(m => m.PractitionerSpecId)
 
                             <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -103,7 +106,7 @@
                                         <span asp-validation-for="SubscriptionWayId" class="text-danger"></span>
                                     </div>
 
-                                    @if (Model.PractitionerTypeId == 1)
+                                    @if (ViewBag.PractitionerTypeId == 1)
                                     {
                                         <!-- Regulator specific fields -->
                                         <div class="form-group row">
@@ -112,7 +115,7 @@
                                             <span asp-validation-for="RegulatorMembership" class="text-danger"></span>
                                         </div>
                                     }
-                                    else if (Model.PractitionerTypeId == 2)
+                                    else if (ViewBag.PractitionerTypeId == 2)
                                     {
                                         <!-- Sharia specific fields -->
                                         <div class="form-group row">
@@ -147,16 +150,28 @@
                                         <label for="Email" class="col-xl-3 col-md-4">@Aadl.Resources.General.lbEmail</label>
                                         <input asp-for="Email" class="form-control col-xl-7 col-md-7" id="EmailInput" type="email" />
                                     </div>
-                                    <!-- Additional fields can be added here -->
+
+                                      <div class="form-group row">
+                                        <label class="col-xl-3 col-md-4"><span>*</span>@Aadl.Resources.General.lbCountry</label>
+                                        @Html.DropDownListFor(emp => emp.CountryId,
+                                                 new SelectList(ViewBag.Countries, "Id", "Name"),
+                                                 "Select Country",
+                                                 new { @class = "custom-select col-md-7" })
+                                        <span asp-validation-for="SubscriptionTypeId" class="text-danger"></span>
+                                    </div>
+
                                     <div class="form-group row">
                                         <label for="City" class="col-xl-3 col-md-4">@Aadl.Resources.General.lbCity</label>
                                         <input asp-for="City" class="form-control col-xl-7 col-md-7" id="CityInput" type="text" />
                                     </div>
+                                    
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-md-4">@Aadl.Resources.General.lbBirthday</label>
                                         <input asp-for="Birthday" class="datepicker-here form-control digits col-md-7" type="date" data-language="en">
                                     </div>
+                                
                                 </div>
+
                             </div>
 
                             <div class="pull-right">

@@ -2,6 +2,7 @@
 using Aadl.Models.PractitionerViewModels;
 using BusinessLib.Bl.Contract;
 using Domains.Models;
+using Domains.Utility;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics.Metrics;
 using System.Net.Http;
@@ -15,12 +16,12 @@ namespace Aadl.Controllers
 
         private readonly ICRUD<TbPractitioner> _clsPractitioner;
         private readonly ICRUD<TbCountry> _clsCountry;
-        private readonly IPractitionerService<TbCaseType> _clsPractitionerServices;
+        private readonly IPractitionerSpecialFeatures<TbPractitioner> _clsPractitionerService;
         public PractitionerController(ICRUD<TbPractitioner>practitionerService01,
-             IPractitionerService<TbCaseType> practitionerService02, ICRUD<TbCountry> counrtyService)
+             IPractitionerSpecialFeatures<TbPractitioner> practitionerService, ICRUD<TbCountry> counrtyService)
         {
             _clsPractitioner = practitionerService01;
-            _clsPractitionerServices= practitionerService02;
+            _clsPractitionerService = practitionerService;
             _clsCountry = counrtyService;
 
         }
@@ -71,12 +72,13 @@ namespace Aadl.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult>Edit(int entityId)
+        public async Task<IActionResult>Edit(int? practitionerId , int practitionerTypeId)
         {
             try
             {
-
-                var practitioner = _clsPractitioner.GetById(entityId);
+                if (practitionerId != null && practitionerTypeId != 0) { 
+                var practitioner = _clsPractitioner.GetById(Convert.ToInt32(practitionerId));
+                }
 
                 ////map to edit model
                 //PractitionerEditViewModel model = new PractitionerEditViewModel()
@@ -88,43 +90,64 @@ namespace Aadl.Controllers
                 //     PractitionerId=entityId,
                 //}
 
-                ViewBag.PractitionerCases = _clsPractitionerServices.GetAll(entityId);
-
+                ViewBag.PractitionerCases = _clsPractitionerService.GetAllCasesBasedOnPractitionerTypeId(practitionerTypeId);
+                ViewBag.PractitionerTypeId = practitionerTypeId;
                 IEnumerable<TbCountry> lst = new List<TbCountry>
                 {
                     new TbCountry { Id = 1, Name = "s" }
                 };
                 //ViewBag.Countries = _clsCountry.GetAll().ToList();
-                ViewBag.Countries = lst;
+                ViewBag.Countries = _clsCountry.GetAll();
 
-                PractitionerEditViewModel model = new PractitionerEditViewModel()
+                PractitionerEditViewModel Editmodel = new PractitionerEditViewModel()
                 {
                     FullName = "مصعب محمود علي عطية",
                     IsActive = true,
-                    PractitionerCases = new List<int>() { 1, 3 },
+                    PractitionerCases = new List<int>() { 4,5 },
                     PractitionerId = 1,
-                    PractitionerTypeId = 1,
+                    PractitionerTypeId = 2,
                     SubscriptionTypeId = 1,
                     SubscriptionWayId = 1,
+                    CreatedByUserId=1,
+                    IssueDate = new DateTime(2024,03,12),
                     PersonId = 4,
                     CountryId = 1,
                     City = "المدينة",
                     Phone="00962780852829",
                     Birthday = new DateTime(1997, 03, 31),
-                    RegulatorMembership = "121312",
-                    ShariaLicenseNumber = string.Empty
+                    RegulatorMembership = string.Empty,
+                    ShariaLicenseNumber = "1923810"
+                };
+                PractitionerEditViewModel Addmodel = new PractitionerEditViewModel()
+                {
+                    //FullName = "",
+                    //IsActive = true,
+                    //PractitionerCases = new List<int>() { 4, 5 },
+                    //PractitionerId = 1,
+                    //PractitionerTypeId = 1,
+                    //SubscriptionTypeId = 1,
+                    //SubscriptionWayId = 1,
+                    //CreatedByUserId = 1,
+                    //IssueDate = new DateTime(2024, 03, 12),
+                    //PersonId = 4,
+                    //CountryId = 1,
+                    //City = "المدينة",
+                    //Phone = "00962780852829",
+                    //Birthday = new DateTime(1997, 03, 31),
+                    //RegulatorMembership = string.Empty,
+                    //ShariaLicenseNumber = "1923810"
                 };
 
                 ViewBag.Title = "أضافة و تعديل بيانات المزاول";
                 ViewBag.SubTitle = "نظامي";
 
-                return View(model);
+                return View(Addmodel);
             
             }
             catch (Exception ex) {
 
                 RedirectToAction("Index");
-                throw new ArgumentNullException(nameof(entityId));
+                throw new ArgumentNullException(nameof(practitionerId));
             }
         }
 
@@ -132,21 +155,117 @@ namespace Aadl.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult Edit(PractitionerEditViewModel model)
         {
+            try
+            {
+
             //I could send it with viewBag[RegulatorMemberShip]
-            if (ModelState.IsValid) {
-                //busines layer save through ef in database transaction method...
-                // Handle the model
-                // Example: Save or update the model data
-                return RedirectToAction("Index");
+            if (ModelState.IsValid)
+                {
+                    ViewBag.PractitionerTypeId = model.PractitionerTypeId;
+                    SavePractitioner(model);
+
+                    //busines layer save through ef in database transaction method...
+                    // Handle the model
+                    // Example: Save or update the model data
+                    return RedirectToAction("Index");
+                }
+            } catch (Exception ex) {
+            
+                //handle 
             }
-            // If the model state is invalid, return the view with the current model
             return View(model);
+
         }
 
-        [HttpPost]
-        public IActionResult Save()
+        public bool SavePractitioner(PractitionerEditViewModel model)
         {
-            return View();
+            // Map view model to entity models manually
+
+            model.CreatedByUserId = 1;
+            model.IssueDate = DateTime.Now;
+            // Map TbPerson
+            var personModel = new TbPerson
+            {
+                Id=model.PersonId,
+                FullName=model.FullName,
+                Birthday=model.Birthday,
+                City=model.City,
+                Phone=model.Phone,
+                CountryId=model.CountryId,
+                CreatedByUserId=model.CreatedByUserId,
+                CreationDate=model.IssueDate,
+                Email=model.Email,
+                UpdateDate=model.LastUpdateDate,
+                UpdateByUserId=model.UpdatedByUserId
+            };
+            // Map TbPractitioner
+
+            var practitionerModel = new TbPractitioner
+            {
+                CreatedByUserId = model.CreatedByUserId,
+                CreatedDate=model.IssueDate,
+                Id= model.PractitionerId,
+                PersonId=model.PersonId,
+                PractitionerTypeId=ViewBag.PractitionerTypeId,
+                UpdatedByUserId=model.UpdatedByUserId,
+                UpdatedDate=model.LastUpdateDate,
+                PractitionerSpecId=model.PractitionerSpecId,
+                TbPerson=null,TbPractitionerSpec=null
+               
+            };
+
+            // Map TbPractitionerSpec
+            var practitionerSpecModel = MapToPractitionerSpec(model);
+
+            // Map TbPractitionerCase
+            var lstPractitionerCases = model.PractitionerCases.Select(caseId => new TbPractitionerCase
+            {
+               CaseId= caseId,
+               PractitionerId= model.PractitionerId,
+               PractitionerTypeId = model.PractitionerTypeId
+
+            }).ToList();
+
+            return _clsPractitionerService.Save(practitionerModel, personModel, practitionerSpecModel, lstPractitionerCases);
+
         }
+
+        public static TbPractitionerSpec MapToPractitionerSpec(PractitionerEditViewModel model)
+        {
+            var practitionerSpecModel = new TbPractitionerSpec();
+
+            model.PractitionerTypeId = 1;
+            switch (model.PractitionerTypeId)
+            {
+                case 1: // Regulator
+                    practitionerSpecModel.RegulatorSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
+                    practitionerSpecModel.RegulatorSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
+                    practitionerSpecModel.RegulatorMembershipNumber = model.RegulatorMembership;
+                    break;
+
+                case 2: // Sharia
+                    practitionerSpecModel.ShariaSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
+                    practitionerSpecModel.ShariaSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
+                    practitionerSpecModel.ShariaLicenseNubmer = model.ShariaLicenseNumber;
+                    break;
+
+                case 3: // Judger
+                    practitionerSpecModel.JudgerSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
+                    practitionerSpecModel.JudgerSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
+                    break;
+
+                case 4: // Expert
+                    practitionerSpecModel.ExpertSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
+                    practitionerSpecModel.ExpertSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
+                    break;
+
+                default:
+                    throw new ArgumentException("Invalid PractitionerTypeId", nameof(model.PractitionerTypeId));
+            }
+
+            return practitionerSpecModel;
+        }
+
     }
+
 }

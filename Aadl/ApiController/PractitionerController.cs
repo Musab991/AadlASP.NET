@@ -8,9 +8,9 @@ namespace Aadl.ApiController
     public class PractitionerController : ControllerBase
     {
 
-        private readonly IPractitionerService<TbCaseType> _clsPractitionerService;
+        private readonly IPractitionerSpecialFeatures<TbPractitioner> _clsPractitionerService;
 
-        public PractitionerController(IPractitionerService<TbCaseType> practitionerService)
+        public PractitionerController(IPractitionerSpecialFeatures<TbPractitioner> practitionerService)
         {
 
             _clsPractitionerService = practitionerService;
@@ -23,7 +23,7 @@ namespace Aadl.ApiController
             
                 try
                 {
-                    var result = _clsPractitionerService.GetAll(id);
+                    var result = _clsPractitionerService.GetAllCasesBasedOnPractitionerTypeId(id);
 
                     var apiResponse = new ApiResponse
                     {

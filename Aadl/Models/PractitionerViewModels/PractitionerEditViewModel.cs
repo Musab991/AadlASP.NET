@@ -16,8 +16,11 @@ namespace Aadl.Models.PractitionerViewModels
 
 
         /////////////shared////////////////////////
+        public int CreatedByUserId{ get; set; } 
+        public DateTime IssueDate { get; set; }
         public int? UpdatedByUserId { get; set; } = null;
         public DateTime? LastUpdateDate { get; set; } = null;
+
 
         //////////////////////////////////////////
 
@@ -26,9 +29,10 @@ namespace Aadl.Models.PractitionerViewModels
         public int PractitionerId { get; set; }
         public int PractitionerTypeId { get; set; }
         public List<int> PractitionerCases { get; set; } = null!;
-
         public int SubscriptionTypeId { get; set; } 
         public int SubscriptionWayId { get; set; } 
+
+        public int ?PractitionerSpecId {  get; set; }
         public bool IsActive { get; set; }
         //regulator
         public string? RegulatorMembership { get; set; } = null;

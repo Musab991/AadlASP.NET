@@ -1,29 +1,25 @@
-﻿using BusinessLib.Bl.Contract;
-using BusinessLib.Data;
-using System.Xml.Linq;
-
-namespace BusinessLib.Bl
+﻿namespace BusinessLib.Bl
 {
-    public class clsCountry : ICRUD<TbCountry>
+    public class clsPractitionerSpec : ICRUD<TbPractitionerSpec>
     {
-        private readonly ICRUD<TbCountry> _clsGenericRepository;
 
-        public clsCountry(ICRUD<TbCountry> countryRepository)
+        private readonly ICRUD<TbPractitionerSpec> _clsGenericRepository;
+        public clsPractitionerSpec(ICRUD<TbPractitionerSpec> countryRepository)
         {
             _clsGenericRepository = countryRepository;
         }
-        public IQueryable<TbCountry> GetAll()
+        public IQueryable<TbPractitionerSpec> GetAll()
         {
-           
+
             return _clsGenericRepository.GetAll();
 
         }
-        public TbCountry GetById(int elementId)
+        public TbPractitionerSpec GetById(int elementId)
         {
 
             return _clsGenericRepository.GetById(elementId);
         }
-        public int? Save(TbCountry element)
+        public int? Save(TbPractitionerSpec element)
         {
 
             return _clsGenericRepository.Save(element);
@@ -37,7 +33,8 @@ namespace BusinessLib.Bl
 
         }
 
-       
+
+
     }
 
 }

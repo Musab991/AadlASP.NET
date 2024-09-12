@@ -10,9 +10,14 @@ namespace BusinessLib.Bl.Contract
     {
         IQueryable<T> GetAll();
         T GetById(int elementId);
-        bool Save(T element);
+        int? Save(T element);
         bool Delete(int elementId);
 
+    }
+    public interface ITransactionOperations<T>
+    {
+
+        int? SaveTransaction(T element,DbContext dbContext);
     }
 
 

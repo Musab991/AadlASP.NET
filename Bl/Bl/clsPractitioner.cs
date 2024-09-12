@@ -1,98 +1,53 @@
 ﻿
 
+using Domains.Models;
+using Microsoft.EntityFrameworkCore.Storage;
+using System.Data.Common;
+
 namespace BusinessLib.Bl
 {
-    public class clsPractitioner: ICRUD<TbPractitioner>
+    public class clsPractitioner: ICRUD<TbPractitioner>, ITransactionOperations<TbPractitioner>
     {
-        private readonly AppDbContext _appDbContext;
-        public clsPractitioner(AppDbContext appDbContextSerivce)
+        private readonly ICRUD<TbPractitioner> _clsGenericRepository;
+        private readonly ITransactionOperations<TbPractitioner> _clsGenericTransactionRepository;
+
+        public clsPractitioner(ICRUD<TbPractitioner> Repository, ITransactionOperations<TbPractitioner> transactionRepository)
         {
-            _appDbContext = appDbContextSerivce;
+            _clsGenericRepository = Repository;
+            _clsGenericTransactionRepository = transactionRepository;
+
         }
+
         public IQueryable<TbPractitioner> GetAll()
         {
-            try
-            {
-                return _appDbContext.TbPractitioners.AsNoTracking().OrderBy(x => x.Id).AsQueryable();
-            
-            }
-            catch (Exception ex)
-            {
 
-                return new List<TbPractitioner>().AsQueryable();
-            }
+            return _clsGenericRepository.GetAll();
 
         }
         public TbPractitioner GetById(int elementId)
         {
 
-            try
-            {
-
-                return _appDbContext.TbPractitioners.SingleOrDefault(x => x.Id == elementId);
-
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-            }
-
+            return _clsGenericRepository.GetById(elementId);
         }
-        public bool Save(TbPractitioner element)
+        public int? Save(TbPractitioner element)
         {
-            try
-            {
 
-                if (element.Id == 0)
-                {
-                    _appDbContext.TbPractitioners.Add(element);
-                    if (_appDbContext.SaveChanges() > 0)
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    _appDbContext.Entry(element).State = EntityState.Modified;
-
-                    if (_appDbContext.SaveChanges() > 0)
-                    {
-                        return true;
-                    }
-
-                }
-
-
-                return false;
-
-            }
-            catch (Exception ex)
-            { return false; }
+            return _clsGenericRepository.Save(element);
 
         }
         public bool Delete(int elementId)
         {
 
-            try
-            {
+            return _clsGenericRepository.Delete(elementId);
 
-                TbPractitioner elementToDelete = GetById(elementId);
-                _appDbContext.TbPractitioners.Remove(elementToDelete);
-                if (_appDbContext.SaveChanges() > 0)
-                    return true;
-
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return false;
 
         }
 
-    }
+        public int? SaveTransaction(TbPractitioner element, DbContext dbContext)
+        {
+            return _clsGenericTransactionRepository.SaveTransaction(element, dbContext);
+        }
 
+
+    }
 }

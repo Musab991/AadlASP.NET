@@ -168,4 +168,7 @@
   <data name="lbBirthday" xml:space="preserve">
     <value>تاريخ الميلاد</value>
   </data>
+  <data name="lbCountry" xml:space="preserve">
+    <value>الدولة</value>
+  </data>
 </root>

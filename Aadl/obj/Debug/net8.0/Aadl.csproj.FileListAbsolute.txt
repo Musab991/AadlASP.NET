@@ -131,7 +131,6 @@ C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.GeneratedMSBuildE
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.AssemblyInfoInputs.cache
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.AssemblyInfo.cs
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.csproj.CoreCompileInputs.cache
-C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.RazorAssemblyInfo.cache
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.RazorAssemblyInfo.cs
@@ -154,8 +153,3 @@ C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\ref\Aadl.dll
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.sourcelink.json
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.Resources.General.resources
 C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.Resources.ResPractitioner.resources
-C:\Users\XIGMATEK\Documents\Project\Aadl\bin\Debug\net8.0\es\Aadl.resources.dll
-C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.Resources.Resource.resources
-C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.Resources.Resource1.resources
-C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\Aadl.Resources.Resource1.es.resources
-C:\Users\XIGMATEK\Documents\Project\Aadl\obj\Debug\net8.0\es\Aadl.resources.dll

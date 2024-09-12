@@ -3,97 +3,46 @@ using BusinessLib.Data;
 
 namespace BusinessLib.Bl
 {
-    public class clsPerson:ICRUD<TbPerson>
+    public class clsPerson:ICRUD<TbPerson>,ITransactionOperations<TbPerson>
     {
-        private readonly AppDbContext _appDbContext;
-        public clsPerson(AppDbContext appDbContextSerivce)
+        private readonly ICRUD<TbPerson> _clsGenericRepository;
+        private readonly ITransactionOperations<TbPerson> _clsGenericTransactionRepository;
+
+        public clsPerson(ICRUD<TbPerson> Repository, ITransactionOperations<TbPerson> transactionRepository)
         {
-            _appDbContext = appDbContextSerivce;
+            _clsGenericRepository = Repository;
+            _clsGenericTransactionRepository = transactionRepository;
+
         }
+
         public IQueryable<TbPerson> GetAll()
         {
-            try
-            {
 
-                return _appDbContext.TbPeople.AsNoTracking().OrderBy(x => x.FullName).AsQueryable();
-            }
-            catch (Exception ex)
-            {
-
-                return new List<TbPerson>().AsQueryable();  
-            }
+            return _clsGenericRepository.GetAll();
 
         }
         public TbPerson GetById(int elementId)
         {
 
-            try
-            {
-
-                return _appDbContext.TbPeople.SingleOrDefault(x => x.Id == elementId);
-
-            }
-
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-
-            }
-
+            return _clsGenericRepository.GetById(elementId);
         }
-        public bool Save(TbPerson element)
+        public int? Save(TbPerson element)
         {
-            try
-            {
 
-                if (element.Id == 0)
-                {
-                    _appDbContext.TbPeople.Add(element);
-                    if (_appDbContext.SaveChanges() > 0)
-                    {
-                        return true;
-                    }
-                }
-
-
-                else
-                {
-                    _appDbContext.Entry(element).State = EntityState.Modified;
-
-                    if (_appDbContext.SaveChanges() > 0)
-                    {
-                        return true;
-                    }
-                }
-
-
-
-                return false;
-            }
-            catch (Exception ex) { return false; }
+            return _clsGenericRepository.Save(element);
 
         }
         public bool Delete(int elementId)
         {
 
-            try
-            {
+            return _clsGenericRepository.Delete(elementId);
 
-                TbPerson elementToDelete = GetById(elementId);
-                _appDbContext.TbPeople.Remove(elementToDelete);
-                if (_appDbContext.SaveChanges() > 0)
-                    return true;
-
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
-            return false;
 
         }
-   
 
+        public int? SaveTransaction(TbPerson element, DbContext dbContext)
+        {
+            return _clsGenericTransactionRepository.SaveTransaction(element, dbContext);
+        }
     }
 }

@@ -1,11 +1,12 @@
 ﻿namespace BusinessLib.Bl.Contract
 {
-    public interface IPractitionerService<T>
+
+
+    public interface IPractitionerSpecialFeatures<T>
     {
-        IQueryable<T> GetAll(int practitionerTypeId);
-        T GetById(int caseId,int practitionerTypeId);
-        bool Save(T element, int practitionerTypeId);
-        bool Delete(int caseId, int practitionerTypeId);
+
+        bool Save(TbPractitioner element, TbPerson element2, TbPractitionerSpec element3, List<TbPractitionerCase> list);
+        IQueryable GetAllCasesBasedOnPractitionerTypeId(int practitionerTypeId);
 
     }
 

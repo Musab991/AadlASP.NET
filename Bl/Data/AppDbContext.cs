@@ -16,10 +16,7 @@ namespace BusinessLib.Data
         public virtual DbSet<TbPerson>TbPeople { get; set; }
         public virtual DbSet<TbPractitionerCase>TbPractitionerCases { get; set; }
         public virtual DbSet<TbCaseType> TbCaseTypes { get; set; }
-
-
-
-        // _ view _ list 
+        public virtual DbSet<TbPractitionerSpec> TbPractitionerSpecs{ get; set; }
 
         public AppDbContext()
         {
