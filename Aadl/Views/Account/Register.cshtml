@@ -1,0 +1,114 @@
+﻿@model RegisterUserViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="منصة عدل تقدم استشارات قانونية متخصصة وخدمات دعم قانوني متميزة. احصل على استشارات من مستشارين قانونيين محترفين لمساعدتك في جميع قضاياك القانونية. نحن هنا لنقدم لك الدعم اللازم لتحقيق أفضل النتائج في كافة الأمور القانونية.">
+    <meta name="keywords" content="استشارات قانونية, دعم قانوني, مستشار قانوني, قضايا قانونية, خدمات قانونية, تمثيل قانوني, إعداد وثائق قانونية">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="~/Admin/assets/images/dashboard/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Admin/assets/images/dashboard/favicon.png" type="image/x-icon">
+    <title>إنشاء حساب جديد - منصة عدل</title>
+
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- App css-->
+    <link rel="stylesheet" type="text/css" href="~/Admin/assets/css/admin.css">
+
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .form-control {
+            border-radius: 0.375rem; /* Apply rounded corners */
+        }
+
+        .btn {
+            border-radius: 0.375rem; /* Apply rounded corners */
+        }
+
+        .login-link {
+            text-decoration: none;
+        }
+
+        .login-link:hover {
+            text-decoration: underline;
+        }
+
+        .separator {
+            border-top: 1px solid #ccc;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body dir="rtl">
+    <div class="container">
+        <div class="card">
+        <div class="card-body">
+            <h2 class="text-center mb-5">إنشاء حساب جديد</h2>
+            <form asp-controller="Account" asp-action="Register" method="post">
+                @* this code to show the server errors if any *@
+                <!-- server errors starts -->
+                <div class="mb-3">
+                    @if (ViewBag.ServerError != null)
+                    {
+                        <p class="text-danger fs-6">@ViewBag.ServerError</p>
+                    }
+                </div>
+                <!-- server errors ends -->
+                <div class="form-group mb-3">
+                    <input asp-for="UserName" type="text" class="form-control rounded" placeholder="اسم المستخدم" required>
+                    <span class="text-danger" asp-validation-for="UserName"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="Email" type="email" class="form-control rounded" placeholder="البريد الإلكتروني" required>
+                    <span class="text-danger" asp-validation-for="Email"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="Password" type="password" class="form-control rounded" placeholder="كلمة المرور" required>
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+                <div class="form-group mb-3">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control rounded" placeholder="تأكيد كلمة المرور" required>
+                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block w-100 rounded">إنشاء حساب</button>
+                <hr class="my-4">
+                <div class="text-end">
+                    <p class="mb-0 fs-6">
+                        هل لديك حساب؟
+                        <a asp-controller="Account" asp-action="Login" class="login-link">
+                            تسجيل الدخول
+                        </a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"> </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>
