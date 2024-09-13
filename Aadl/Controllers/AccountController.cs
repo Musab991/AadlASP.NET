@@ -42,7 +42,7 @@ namespace Aadl.Controllers
 
                     if (createResult.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Login");
                     }
 
                     foreach (var item in createResult.Errors)
@@ -74,6 +74,54 @@ namespace Aadl.Controllers
             return PartialView(newUserVM);
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return PartialView();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Login(LoginUserViewModel userVM)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // Attempt to find the user by username or email
+                    ApplicationUser? userModel = await userManager.FindByNameAsync(userVM.UserName)
+                                                ?? await userManager.FindByEmailAsync(userVM.UserName);
+
+                    if (userModel != null)
+                    {
+                        bool found = await userManager.CheckPasswordAsync(userModel, userVM.Password);
+
+                        if (found)
+                        {
+                            await signInManager.SignInAsync(user: userModel, isPersistent: userVM.RememberMe);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        else
+                        {
+                            ModelState.AddModelError("Password", "كلمة السر خطاء.");
+                        }
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("UserName", "لا يوجد حساب بهذا الاسم/الايميل.");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (you can log the exception details using a logging framework)
+                ViewBag.ServerError = "حدث خطأ غير متوقع. الرجاء المحاولة مرة أخرى لاحقاً.";
+
+                // Optionally, you can add more details to the error message if it's safe to expose it to the user
+                // ModelState.AddModelError("", ex.Message);
+            }
+
+            return PartialView(userVM);
+        }
     }
 }

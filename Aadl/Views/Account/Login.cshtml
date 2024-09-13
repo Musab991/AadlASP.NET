@@ -1,0 +1,73 @@
+﻿@model LoginUserViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="منصة عدل تقدم استشارات قانونية متخصصة وخدمات دعم قانوني متميزة. احصل على استشارات من مستشارين قانونيين محترفين لمساعدتك في جميع قضاياك القانونية. نحن هنا لنقدم لك الدعم اللازم لتحقيق أفضل النتائج في كافة الأمور القانونية.">
+    <meta name="keywords" content="استشارات قانونية, دعم قانوني, مستشار قانوني, قضايا قانونية, خدمات قانونية, تمثيل قانوني, إعداد وثائق قانونية">
+    <meta name="author" content="pixelstrap">
+    <link rel="icon" href="~/Admin/assets/images/dashboard/favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="~/Admin/assets/images/dashboard/favicon.png" type="image/x-icon">
+    <title>تسجيل الدخول - منصة عدل</title>
+
+    <!-- Bootstrap css-->
+    <link rel="stylesheet" type="text/css" href="~/lib/bootstrap/dist/css/bootstrap.min.css">
+
+    <!-- App css-->
+    <link rel="stylesheet" type="text/css" href="~/Admin/assets/css/admin.css">
+
+    <!-- styles for this page -->
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/account.css"/>
+</head>
+<body dir="rtl">
+    <div class="container">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-center mb-5">تسجيل الدخول</h2>
+                <form asp-controller="Account" asp-action="Login" method="post">
+                    @* this code to show the server errors if any *@
+                    <!-- server errors starts -->
+                    <div class="mb-3">
+                        @if (ViewBag.ServerError != null)
+                        {
+                            <p class="text-danger fs-6">@ViewBag.ServerError</p>
+                        }
+                    </div>
+                    <!-- server errors ends -->
+                    <div class="form-group mb-3">
+                        <input asp-for="UserName" type="text" class="form-control rounded" placeholder="اسم المستخدم او الإيميل" required>
+                        <span class="text-danger" asp-validation-for="UserName"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <input asp-for="Password" type="password" class="form-control rounded" placeholder="كلمة المرور" required>
+                        <span class="text-danger" asp-validation-for="Password"></span>
+                    </div>
+                    <div class="mb-3 custom-control custom-checkbox mr-sm-2 d-flex gap-2 align-items-center">
+                        <input asp-for="RememberMe" type="checkbox" class="form-check-input me-2">
+                        <label class="form-check-label" asp-for="RememberMe">تذكرني</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block w-100 rounded">تسجيل الدخول</button>
+                    <hr class="my-4">
+                    <div class="text-end">
+                        <p class="mb-0 fs-6">
+                            لا تملك حسابًا؟
+                            <a asp-controller="Account" asp-action="Register" class="login-link">
+                                إنشاء حساب جديد
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"> </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+</body>
+</html>
