@@ -2,8 +2,14 @@
 using Aadl.Models.PractitionerViewModels;
 using BusinessLib.Bl.Contract;
 using Domains.Models;
+using Domains.Models.Identity;
 using Domains.Utility;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using System;
+using System.Collections.Concurrent;
 using System.Diagnostics.Metrics;
 using System.Net.Http;
 using System.Numerics;
@@ -13,17 +19,35 @@ namespace Aadl.Controllers
 {
     public class PractitionerController : Controller
     {
-
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ICRUD<TbPractitioner> _clsPractitioner;
+        private readonly ISpecIncludeable _clsPractitionerSpec;
         private readonly ICRUD<TbCountry> _clsCountry;
-        private readonly IPractitionerSpecialFeatures<TbPractitioner> _clsPractitionerService;
+        private readonly IPractitionerTransactional<TbPractitioner> _clsPractitionerService;
+        private readonly ISpecialServices<TbCaseType> _clsSpecialServices;
         public PractitionerController(ICRUD<TbPractitioner>practitionerService01,
-             IPractitionerSpecialFeatures<TbPractitioner> practitionerService, ICRUD<TbCountry> counrtyService)
+             IPractitionerTransactional<TbPractitioner> practitionerService, ICRUD<TbCountry> counrtyService,
+             UserManager<ApplicationUser> userManagerService, IHttpContextAccessor httpContextAccessor,
+             ISpecIncludeable clsPractitionerSpec, ISpecialServices<TbCaseType> clsSpecialServices)
         {
             _clsPractitioner = practitionerService01;
             _clsPractitionerService = practitionerService;
             _clsCountry = counrtyService;
+            _userManager = userManagerService;
+            _httpContextAccessor = httpContextAccessor;
+            _clsPractitionerSpec = clsPractitionerSpec;
+            _clsSpecialServices = clsSpecialServices;
+        }
+        public async Task<ApplicationUser?> GetCurrentUserAsync()
+        {
+            var user = _httpContextAccessor.HttpContext?.User;
+            if (user == null)
+            {
+                return null; // No user is logged in
+            }
 
+            return await _userManager.GetUserAsync(user); // Gets the current logged-in user
         }
         public IActionResult Index()
         {
@@ -34,32 +58,24 @@ namespace Aadl.Controllers
             try
             {
 
-                var result = _clsPractitioner.GetAll().Select(p => new PractitionerListViewModel()
+                var result = _clsPractitionerSpec.GetAll(true, true, true)
+                .Select(p => new PractitionerListViewModel()
                 {
                     PractitionerId = p.Id,
-                    CreatedByUser = p.CreatedByUserId.ToString(),
-                    IsActive = true, //change later on to isDelete
-                    PractitionerCases = new List<string>() { "case1", "case2", "case3" },
-                    PractitionerType = "type",
-                    SubscriptionType = "subscriptionFree",
-                    SubscriptionWay = "SupportSubscriptionWay"
-
-
+                    CreatedDate= DateTime.Now,
+                    FullName=p.TbPractitioner.TbPerson.FullName,
+                    IsActive=true,
+                    CreatedByUserName="None",
+                    Phone=p.TbPractitioner.TbPerson.Phone,
+                    PractitionerCases=
+                    p.TbPractitioner.TbPractitionerCases.Select(c=>c.TbCaseType.Name).ToList(),
+                    PractitionerType=(Enums.PractitionerTypeEnum)p.PractitionerTypeId,
+                    SubscriptionType=p.SubscriptionType,
+                    SubscriptionWay=p.SubscriptionWay
+      
+                    
                 }).ToList();
-
-                var practitioner = new PractitionerListViewModel()
-                {
-                    PractitionerId = 1,
-                    FullName="مصعب محمود علي عطية",
-                    CreatedByUser = "خالد_",
-                    IsActive = true, //change later on to isDelete
-                    PractitionerCases = new List<string>() { "قضية1", "قضية2", "قضية3" },
-                    PractitionerType = "نظامي",
-                    SubscriptionType = "مجاني",
-                    SubscriptionWay = "دعم خاص"
-                };
-                result.Add(practitioner);
-            //map to View-List-Model
+                            
 
             return View(result);
             }
@@ -72,88 +88,50 @@ namespace Aadl.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult>Edit(int? practitionerId , int practitionerTypeId)
+        public IActionResult Edit(int? practitionerId , Enums.PractitionerTypeEnum practitionerTypeId)
         {
             try
             {
-                if (practitionerId != null && practitionerTypeId != 0) { 
-                var practitioner = _clsPractitioner.GetById(Convert.ToInt32(practitionerId));
-                }
-
-                ////map to edit model
-                //PractitionerEditViewModel model = new PractitionerEditViewModel()
-                //{
-                //     FullName=practitioner.TbPerson.FullName,
-                //     IsActive=true,
-                //     LastUpdateDate=DateTime.Now,
-                //     PractitionerCases=new List<int>(),
-                //     PractitionerId=entityId,
-                //}
-
-                ViewBag.PractitionerCases = _clsPractitionerService.GetAllCasesBasedOnPractitionerTypeId(practitionerTypeId);
-                ViewBag.PractitionerTypeId = practitionerTypeId;
-                IEnumerable<TbCountry> lst = new List<TbCountry>
-                {
-                    new TbCountry { Id = 1, Name = "s" }
-                };
-                //ViewBag.Countries = _clsCountry.GetAll().ToList();
+                ViewBag.PractitionerCases = _clsSpecialServices.GetAll((int)practitionerTypeId);
                 ViewBag.Countries = _clsCountry.GetAll();
 
-                PractitionerEditViewModel Editmodel = new PractitionerEditViewModel()
+                PractitionerEditViewModel model = new PractitionerEditViewModel();
+                if (practitionerId == null||practitionerId==0)
                 {
-                    FullName = "مصعب محمود علي عطية",
-                    IsActive = true,
-                    PractitionerCases = new List<int>() { 4,5 },
-                    PractitionerId = 1,
-                    PractitionerTypeId = 2,
-                    SubscriptionTypeId = 1,
-                    SubscriptionWayId = 1,
-                    CreatedByUserId=1,
-                    IssueDate = new DateTime(2024,03,12),
-                    PersonId = 4,
-                    CountryId = 1,
-                    City = "المدينة",
-                    Phone="00962780852829",
-                    Birthday = new DateTime(1997, 03, 31),
-                    RegulatorMembership = string.Empty,
-                    ShariaLicenseNumber = "1923810"
-                };
-                PractitionerEditViewModel Addmodel = new PractitionerEditViewModel()
+
+                    model.PractitionerType =practitionerTypeId;
+
+                }
+
+                else
                 {
-                    //FullName = "",
-                    //IsActive = true,
-                    //PractitionerCases = new List<int>() { 4, 5 },
-                    //PractitionerId = 1,
-                    //PractitionerTypeId = 1,
-                    //SubscriptionTypeId = 1,
-                    //SubscriptionWayId = 1,
-                    //CreatedByUserId = 1,
-                    //IssueDate = new DateTime(2024, 03, 12),
-                    //PersonId = 4,
-                    //CountryId = 1,
-                    //City = "المدينة",
-                    //Phone = "00962780852829",
-                    //Birthday = new DateTime(1997, 03, 31),
-                    //RegulatorMembership = string.Empty,
-                    //ShariaLicenseNumber = "1923810"
-                };
+                    var practitionerSpec = _clsPractitionerSpec.GetById((int)practitionerId, (int)practitionerTypeId, true,true,true);
 
-                ViewBag.Title = "أضافة و تعديل بيانات المزاول";
-                ViewBag.SubTitle = "نظامي";
+                    Mapper.MapPersonToPractitionerEditViewModel(model,practitionerSpec.TbPractitioner.TbPerson);
+                    Mapper.MapSpecToPractitionerEditViewModel(practitionerSpec, model);
+                    Mapper.MapCasesToPractitionerEditViewModel(practitionerSpec.TbPractitioner.TbPractitionerCases.ToList(), model);
 
-                return View(Addmodel);
-            
+                    ViewBag.Title = "أضافة و تعديل بيانات المزاول";
+
+                    return View(model);
+
+                }
+
+                return View(model);
+
             }
             catch (Exception ex) {
 
-                RedirectToAction("Index");
+                return RedirectToAction("Index");
                 throw new ArgumentNullException(nameof(practitionerId));
             }
         }
 
+
+
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Edit(PractitionerEditViewModel model)
+        public async Task<IActionResult> Edit(PractitionerEditViewModel model)
         {
             try
             {
@@ -161,111 +139,63 @@ namespace Aadl.Controllers
             //I could send it with viewBag[RegulatorMemberShip]
             if (ModelState.IsValid)
                 {
-                    ViewBag.PractitionerTypeId = model.PractitionerTypeId;
+                    var currentUser = await GetCurrentUserAsync();
+                    if (currentUser != null)
+                    {
+                        // Access current user's properties, e.g., currentUser.UserName
+                        var userName = currentUser.UserName;
+
+                        if (model.PractitionerId == 0)
+                        {
+                        }
+                        else
+                        {
+                           
+                        }
+
+
+                    }
+                    model.CreatedByUserId = 1;
+                    model.CreatedDate= DateTime.Now;
+                    model.UpdatedByUserId = 1;
+                    model.LastUpdateDate = DateTime.Now;
                     SavePractitioner(model);
 
                     //busines layer save through ef in database transaction method...
                     // Handle the model
                     // Example: Save or update the model data
-                    return RedirectToAction("Index");
+                    return RedirectToAction("List");
                 }
             } catch (Exception ex) {
-            
+                return RedirectToAction("Index");
+
                 //handle 
             }
             return View(model);
 
         }
 
-        public bool SavePractitioner(PractitionerEditViewModel model)
+        private bool SavePractitioner(PractitionerEditViewModel model)
         {
             // Map view model to entity models manually
 
-            model.CreatedByUserId = 1;
-            model.IssueDate = DateTime.Now;
             // Map TbPerson
-            var personModel = new TbPerson
-            {
-                Id=model.PersonId,
-                FullName=model.FullName,
-                Birthday=model.Birthday,
-                City=model.City,
-                Phone=model.Phone,
-                CountryId=model.CountryId,
-                CreatedByUserId=model.CreatedByUserId,
-                CreationDate=model.IssueDate,
-                Email=model.Email,
-                UpdateDate=model.LastUpdateDate,
-                UpdateByUserId=model.UpdatedByUserId
-            };
-            // Map TbPractitioner
+            TbPerson personModel =Mapper.MapPractitionerEditViewModelToPerson(model);
 
-            var practitionerModel = new TbPractitioner
-            {
-                CreatedByUserId = model.CreatedByUserId,
-                CreatedDate=model.IssueDate,
-                Id= model.PractitionerId,
-                PersonId=model.PersonId,
-                PractitionerTypeId=ViewBag.PractitionerTypeId,
-                UpdatedByUserId=model.UpdatedByUserId,
-                UpdatedDate=model.LastUpdateDate,
-                PractitionerSpecId=model.PractitionerSpecId,
-                TbPerson=null,TbPractitionerSpec=null
-               
-            };
+            // Map TbPractitioner
+            TbPractitioner practitionerModel = Mapper.MapPractitionerEditViewModelToPractitioner(model);
 
             // Map TbPractitionerSpec
-            var practitionerSpecModel = MapToPractitionerSpec(model);
+            var practitionerSpecModel = Mapper.MapPractitionerEditViewModelToSpec(model);
 
             // Map TbPractitionerCase
-            var lstPractitionerCases = model.PractitionerCases.Select(caseId => new TbPractitionerCase
-            {
-               CaseId= caseId,
-               PractitionerId= model.PractitionerId,
-               PractitionerTypeId = model.PractitionerTypeId
+            var lstPractitionerCases = Mapper.MapPractitionerEditViewModelToCases(model);
 
-            }).ToList();
-
-            return _clsPractitionerService.Save(practitionerModel, personModel, practitionerSpecModel, lstPractitionerCases);
+            return _clsPractitionerService.SaveTransaction(practitionerModel, personModel, practitionerSpecModel, lstPractitionerCases);
 
         }
 
-        public static TbPractitionerSpec MapToPractitionerSpec(PractitionerEditViewModel model)
-        {
-            var practitionerSpecModel = new TbPractitionerSpec();
-
-            model.PractitionerTypeId = 1;
-            switch (model.PractitionerTypeId)
-            {
-                case 1: // Regulator
-                    practitionerSpecModel.RegulatorSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
-                    practitionerSpecModel.RegulatorSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
-                    practitionerSpecModel.RegulatorMembershipNumber = model.RegulatorMembership;
-                    break;
-
-                case 2: // Sharia
-                    practitionerSpecModel.ShariaSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
-                    practitionerSpecModel.ShariaSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
-                    practitionerSpecModel.ShariaLicenseNubmer = model.ShariaLicenseNumber;
-                    break;
-
-                case 3: // Judger
-                    practitionerSpecModel.JudgerSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
-                    practitionerSpecModel.JudgerSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
-                    break;
-
-                case 4: // Expert
-                    practitionerSpecModel.ExpertSubscriptionType = (Enums.SubscriptionTypeEnum)model.SubscriptionTypeId;
-                    practitionerSpecModel.ExpertSubscriptionWay = (Enums.SubscriptionWayEnum)model.SubscriptionWayId;
-                    break;
-
-                default:
-                    throw new ArgumentException("Invalid PractitionerTypeId", nameof(model.PractitionerTypeId));
-            }
-
-            return practitionerSpecModel;
-        }
-
+      
     }
 
 }

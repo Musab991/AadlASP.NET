@@ -42,9 +42,11 @@ builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
 builder.Services.AddControllersWithViews();
 builder.Services.AddScoped(typeof(ICRUD<>), typeof(clsGenericRepository<>));
 builder.Services.AddScoped(typeof(ITransactionOperations<>), typeof(clsGenericRepository<>));
-builder.Services.AddScoped<ISpecialRetriveToData<TbCaseType>, clsCaseType>();
+builder.Services.AddScoped<ISpecIncludeable, clsPractitionerSpecRepository>();
+builder.Services.AddScoped<ISpecialServices<TbCaseType>, clsCaseType>();
 builder.Services.AddScoped<IPractitionerCaseSpecialMethods<TbPractitionerCase>, clsPractitionerCase>();
-builder.Services.AddScoped<IPractitionerSpecialFeatures<TbPractitioner>, clsPractitionerService<TbPractitioner>>();
+
+builder.Services.AddScoped<IPractitionerTransactional<TbPractitioner>, clsPractitionerService<TbPractitioner>>();
 var app = builder.Build();
 
     // Configure the HTTP request pipeline.

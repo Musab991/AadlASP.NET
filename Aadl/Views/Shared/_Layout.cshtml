@@ -140,36 +140,20 @@
                         <p>general manager.</p>
                     </div>
                     <ul class="sidebar-menu">
-                        <li><a class="sidebar-header" asp-controller="practitioner" asp-action="edit" asp-route-entityId="1"><i data-feather="home"></i><span>Dashboard</span></a></li>
+                        <li><a class="sidebar-header" asp-controller="practitioner" asp-action="index">
+                            <i data-feather="home"></i>
+                            <span>الرئيسية</span></a></li>
                         <li>
-                            <a class="sidebar-header" href="#"><i data-feather="box"></i> <span>Products</span><i class="fa fa-angle-right pull-right"></i></a>
-                            <ul class="sidebar-submenu">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-circle"></i>
-                                        <span>Physical</span> <i class="fa fa-angle-right pull-right"></i>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li><a href="category.html"><i class="fa fa-circle"></i>Category</a></li>
-                                        <li><a href="category-sub.html"><i class="fa fa-circle"></i>Sub Category</a></li>
-                                        <li><a href="product-list.html"><i class="fa fa-circle"></i>Product List</a></li>
-                                        <li><a href="product-detail.html"><i class="fa fa-circle"></i>Product Detail</a></li>
-                                        <li><a href="add-product.html"><i class="fa fa-circle"></i>Add Product</a></li>
+                            <a class="sidebar-header" href="#"><i data-feather="box"></i> <span>@Aadl.Resources.ResPractitioner.lbPractitioners</span>
+                                <i class="fa fa-angle-right pull-right"></i></a>
+                                 <ul class="sidebar-submenu">
+                                        <li><a href="category.html"><i class="fa fa-circle"></i>
+                                            @Aadl.Resources.ResPractitioner.lbRegulators</a></li>
+                                        <li><a href="category-sub.html"><i class="fa fa-circle"></i>@Aadl.Resources.ResPractitioner.lbSharias</a></li>
+                                        <li><a href="product-list.html"><i class="fa fa-circle"></i>@Aadl.Resources.ResPractitioner.lbJudgers</a></li>
+                                        <li><a href="product-detail.html"><i class="fa fa-circle"></i>@Aadl.Resources.ResPractitioner.lbExperts</a></li>
                                     </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-circle"></i>
-                                        <span>Digital</span> <i class="fa fa-angle-right pull-right"></i>
-                                    </a>
-                                    <ul class="sidebar-submenu">
-                                        <li><a href="category-digital.html"><i class="fa fa-circle"></i>Category</a></li>
-                                        <li><a href="category-digitalsub.html"><i class="fa fa-circle"></i>Sub Category</a></li>
-                                        <li><a href="product-listdigital.html"><i class="fa fa-circle"></i>Product List</a></li>
-                                        <li><a href="add-digital-product.html"><i class="fa fa-circle"></i>Add Product</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                          
                         </li>
                         <li>
                             <a class="sidebar-header" href=""><i data-feather="dollar-sign"></i><span>Sales</span><i class="fa fa-angle-right pull-right"></i></a>

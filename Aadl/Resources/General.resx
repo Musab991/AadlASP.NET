@@ -121,16 +121,16 @@
     <value>عمليات</value>
   </data>
   <data name="lbAdd" xml:space="preserve">
-    <value>New</value>
+    <value>أضافة</value>
   </data>
   <data name="lbCreatedByUser" xml:space="preserve">
     <value>تم الانشاء من قبل</value>
   </data>
   <data name="lbDelete" xml:space="preserve">
-    <value>Delete</value>
+    <value>حذف</value>
   </data>
   <data name="lbEdit" xml:space="preserve">
-    <value>Edit</value>
+    <value>التعديل</value>
   </data>
   <data name="lbFullName" xml:space="preserve">
     <value>الاسم الكامل</value>
@@ -142,16 +142,13 @@
     <value>لا</value>
   </data>
   <data name="lbSave" xml:space="preserve">
-    <value>Save</value>
+    <value>حفظ</value>
   </data>
   <data name="lbYes" xml:space="preserve">
     <value>نعم</value>
   </data>
   <data name="lbChooseCase" xml:space="preserve">
     <value>اختار قضية</value>
-  </data>
-  <data name="String1" xml:space="preserve">
-    <value>dsas</value>
   </data>
   <data name="lbCity" xml:space="preserve">
     <value>المدينة</value>
@@ -170,5 +167,18 @@
   </data>
   <data name="lbCountry" xml:space="preserve">
     <value>الدولة</value>
+  </data>
+  <data name="lbRegulators" xml:space="preserve">
+    <value>النظامين</value>
+  </data>
+  <data name="lbSharias" xml:space="preserve">
+    <value>الشرعيين
+</value>
+  </data>
+  <data name="lbJudgers" xml:space="preserve">
+    <value>المحكمين</value>
+  </data>
+  <data name="lbExperts" xml:space="preserve">
+    <value>الخبراء</value>
   </data>
 </root>

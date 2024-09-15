@@ -2,19 +2,15 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using Domains.Utility;
 
 namespace Aadl.Models.PractitionerViewModels
 {
-	public class PractitionerListViewModel
+	public class PractitionerListViewModel : PractitionerViewModel
     {
-        public int PractitionerId { get; set; }
-        public string FullName { get; set; } = null!;
-        public string PractitionerType { get; set; } = null!;
-        public List<string> PractitionerCases { get; set; } = null!;
-        public string CreatedByUser { get; set; } = null!;
-        public string SubscriptionType { get; set; } = null!;
-        public string SubscriptionWay { get; set; } = null!;
-        public bool IsActive { get; set; }
+      
+        public List<string>PractitionerCases { get; set; } = null!;
+        public string CreatedByUserName {  get; set; }=null!;
 
     }
 

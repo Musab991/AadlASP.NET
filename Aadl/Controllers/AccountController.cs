@@ -91,8 +91,7 @@ namespace Aadl.Controllers
                     // Attempt to find the user by username or email
                     ApplicationUser? userModel = await userManager.FindByNameAsync(userVM.UserName)
                                                 ?? await userManager.FindByEmailAsync(userVM.UserName);
-
-                    if (userModel != null)
+                    if (userModel !=null)
                     {
                         bool found = await userManager.CheckPasswordAsync(userModel, userVM.Password);
 

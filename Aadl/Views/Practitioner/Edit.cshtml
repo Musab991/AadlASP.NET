@@ -3,25 +3,26 @@
 
     // Determine the navigation title based on PractitionerTypeId
     string practitionerTitle="";
-    if(ViewBag.PractitionerTypeId !=0)
-        switch (ViewBag.PractitionerTypeId)
-    {
-        case 1:
-            practitionerTitle = @Aadl.Resources.ResPractitioner.lbRegulator;
-            break;
-        case 2:
-            practitionerTitle = @Aadl.Resources.ResPractitioner.lbSharia;
-            break;
-        case 3:
-            practitionerTitle = @Aadl.Resources.ResPractitioner.lbJudger;
-            break;
-        case 4:
-            practitionerTitle = @Aadl.Resources.ResPractitioner.lbExpert;
-            break;
-        default:
-            practitionerTitle = "NONE";
-            break;
-    }
+    if(Model.PractitionerType !=0)
+        switch (Model.PractitionerType)
+        {
+            case Domains.Utility.Enums.PractitionerTypeEnum.Regulator:
+                practitionerTitle = @Aadl.Resources.ResPractitioner.lbRegulator;
+                break;
+            case Domains.Utility.Enums.PractitionerTypeEnum.Sharia:
+                practitionerTitle = @Aadl.Resources.ResPractitioner.lbSharia;
+                break;
+            case Domains.Utility.Enums.PractitionerTypeEnum.Judger:
+                practitionerTitle = @Aadl.Resources.ResPractitioner.lbJudger;
+                break;
+            case Domains.Utility.Enums.PractitionerTypeEnum.Expert:
+                practitionerTitle = @Aadl.Resources.ResPractitioner.lbExpert;
+                break;
+            default:
+                practitionerTitle = "NONE";
+                break;
+        }
+
 }
 
 @section Styles{
@@ -41,7 +42,7 @@
                         <h3>
                             @ViewBag.Title
                             <small>
-                                @ViewBag.SubTitle
+                                @practitionerTitle
                             </small>
                         </h3>
                     </div>
@@ -77,12 +78,12 @@
 
                         <form asp-controller="practitioner" asp-action="edit" method="post" class="needs-validation user-add">
                             <input type="hidden" name="PractitionerId" value="@Model.PractitionerId" />
-                            <input type="hidden" name="PractitionerTypeId" value="@Model.PractitionerTypeId" />
+                            <input type="hidden" name="PractitionerType" value="@Model.PractitionerType" />
                             <input type="hidden" name="UpdatedByUserId" value="@Model.UpdatedByUserId" />
                             <input type="hidden" name="CreatedByUserId" value="@Model.CreatedByUserId" />
                             @Html.HiddenFor(m => m.PersonId)
                             @Html.HiddenFor(m => m.LastUpdateDate)
-                            @Html.HiddenFor(m => m.IssueDate)
+                            @Html.HiddenFor(m => m.CreatedDate)
                             @Html.HiddenFor(m => m.PractitionerSpecId)
 
                             <div asp-validation-summary="All" class="text-danger"></div>
@@ -97,16 +98,16 @@
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-md-4"><span>*</span>@Aadl.Resources.ResPractitioner.lbSubscriptionType</label>
-                                        @Html.DropDownListFor(Model => Model.SubscriptionTypeId, new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionTypeEnum>(), "Value", "Text"), @Aadl.Resources.ResPractitioner.lbSubscriptionType, new { @class = "custom-select col-md-7" })
-                                        <span asp-validation-for="SubscriptionTypeId" class="text-danger"></span>
+                                        @Html.DropDownListFor(Model => Model.SubscriptionType, new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionTypeEnum>(), "Value", "Text"), @Aadl.Resources.ResPractitioner.lbSubscriptionType, new { @class = "custom-select col-md-7" })
+                                        <span asp-validation-for="SubscriptionType" class="text-danger"></span>
                                     </div>
                                     <div class="form-group row">
                                         <label class="col-xl-3 col-md-4"><span>*</span>@Aadl.Resources.ResPractitioner.lbSubscriptionWay</label>
-                                        @Html.DropDownListFor(Model => Model.SubscriptionWayId, new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionWayEnum>(), "Value", "Text"), @Aadl.Resources.ResPractitioner.lbSubscriptionWay, new { @class = "custom-select col-md-7" })
-                                        <span asp-validation-for="SubscriptionWayId" class="text-danger"></span>
+                                        @Html.DropDownListFor(Model => Model.SubscriptionWay, new SelectList(Aadl.Models.General.EnumExtensions.GetEnumSelectList<Domains.Utility.Enums.SubscriptionWayEnum>(), "Value", "Text"), @Aadl.Resources.ResPractitioner.lbSubscriptionWay, new { @class = "custom-select col-md-7" })
+                                        <span asp-validation-for="SubscriptionWay" class="text-danger"></span>
                                     </div>
 
-                                    @if (ViewBag.PractitionerTypeId == 1)
+                                    @if (Model.PractitionerType == Domains.Utility.Enums.PractitionerTypeEnum.Regulator)
                                     {
                                         <!-- Regulator specific fields -->
                                         <div class="form-group row">
@@ -115,7 +116,7 @@
                                             <span asp-validation-for="RegulatorMembership" class="text-danger"></span>
                                         </div>
                                     }
-                                    else if (ViewBag.PractitionerTypeId == 2)
+                                    else if (Model.PractitionerType == Domains.Utility.Enums.PractitionerTypeEnum.Sharia)
                                     {
                                         <!-- Sharia specific fields -->
                                         <div class="form-group row">
@@ -157,7 +158,7 @@
                                                  new SelectList(ViewBag.Countries, "Id", "Name"),
                                                  "Select Country",
                                                  new { @class = "custom-select col-md-7" })
-                                        <span asp-validation-for="SubscriptionTypeId" class="text-danger"></span>
+                                        <span asp-validation-for="SubscriptionType" class="text-danger"></span>
                                     </div>
 
                                     <div class="form-group row">
@@ -197,10 +198,10 @@
 
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        ClsPractitioner.GetCasesByPractitionerTypeId(@Model.PractitionerTypeId);
+    // document.addEventListener("DOMContentLoaded", function () {
+    //     ClsPractitioner.GetCasesByPractitionerTypeId(@Model.PractitionerType);
 
-    });
+    // });
 </script>
 
 }

@@ -1,6 +1,7 @@
 ﻿@model List<Aadl.Models.PractitionerViewModels.PractitionerListViewModel>
 
 
+
 @section Styles {
     <!-- Datatable css-->
     <link rel="stylesheet" type="text/css" href="~/Admin/assets/css/datatables.css">
@@ -55,17 +56,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach(var practitioner in @Model)
+                        @foreach (var practitioner in @Model)
                         {
-                            
-                        <tr>
-                      
+
+                            <tr>
+
                                 <td>
                                     @practitioner.FullName
                                 </td>
 
                                 <td>
-                                    @practitioner.PractitionerType
+                                    @practitioner.PractitionerType.GetDisplayName()
                                 </td>
 
                                 @if (@practitioner.PractitionerCases.Count == 0)
@@ -90,21 +91,27 @@
                                     </td>
                                 }
 
-                                <td>@practitioner.CreatedByUser</td>
+                                <td>@practitioner.CreatedByUserName</td>
 
-                                <td>@practitioner.SubscriptionType</td>
-                                <td>@practitioner.SubscriptionWay</td>
+                                <td>@practitioner.SubscriptionType.GetDisplayName()</td>
+                                <td>@practitioner.SubscriptionWay.GetDisplayName()</td>
 
+                                
                                 <td>@practitioner.IsActive</td>
 
-                                <td>
-                                <div>
-                                    <i class="fa fa-edit mr-2 font-success"></i>
-                                    <i class="fa fa-trash font-danger"></i>
-                                </div>
-                            </td>
-                        </tr>
-                        } 
+                                        <td>
+                                        <a asp-controller="Practitioner" asp-action="edit"
+                                        asp-route-practitionerId="@practitioner.PractitionerId"
+                                        asp-route-practitionerTypeId="@practitioner.PractitionerType"
+                                        class="btn btn-outline-primary">View</a>
+                                        <a asp-controller="Practitioner" asp-action="delete"
+                                        asp-route-practitionerId="@practitioner.PractitionerId"
+                                        asp-route-practitionerTypeId="@practitioner.PractitionerType"
+                                        class="btn btn-outline-danger">Delete</a>
+
+                                    </td>
+                            </tr>
+                        }
 
 
                     </tbody>

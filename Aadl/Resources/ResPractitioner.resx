@@ -196,9 +196,12 @@
     <value>تفاصيل المزاولين</value>
   </data>
   <data name="lbRegulatorListTitle" xml:space="preserve">
-    <value>قائنة النظاميين</value>
+    <value>قائمة النظاميين</value>
   </data>
   <data name="lbChooseCase" xml:space="preserve">
     <value>اختار قضية</value>
+  </data>
+  <data name="lbPractitioners" xml:space="preserve">
+    <value>مزاولين </value>
   </data>
 </root>

@@ -19769,6 +19769,10 @@
       "PackagePath": "staticwebassets\\Admin\\assets\\video\\video2.mp4"
     },
     {
+      "Id": "C:\\Users\\XIGMATEK\\Documents\\Project\\Aadl\\wwwroot\\Admin\\css\\account.css",
+      "PackagePath": "staticwebassets\\Admin\\css\\account.css"
+    },
+    {
       "Id": "C:\\Users\\XIGMATEK\\Documents\\Project\\Aadl\\wwwroot\\Moduls\\EditViewPractitionerScript.js",
       "PackagePath": "staticwebassets\\Moduls\\EditViewPractitionerScript.js"
     },

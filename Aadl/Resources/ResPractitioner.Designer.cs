@@ -157,8 +157,55 @@ namespace Aadl.Resources {
             get {
                 return ResourceManager.GetString("lbPractitioner", resourceCulture);
             }
+        }  
+        /// <summary>
+        ///   Looks up a localized string similar to المزاولين.
+        /// </summary>
+        public static string lbPractitioners
+        {
+            get
+            {
+                return ResourceManager.GetString("lbPractitioners", resourceCulture);
+            }
         }
-        
+        /// <summary>
+        ///   Looks up a localized string similar to النظامين.
+        /// </summary>
+        public static string lbRegulators
+        {
+            get
+            {
+                return ResourceManager.GetString("lbRegulators", resourceCulture);
+            }
+        }    /// <summary>
+             ///   Looks up a localized string similar to الشرعيين.
+             /// </summary>
+        public static string lbSharias
+        {
+            get
+            {
+                return ResourceManager.GetString("lbRegulators", resourceCulture);
+            }
+        } /// <summary>
+          ///   Looks up a localized string similar to المحكمين.
+          /// </summary>
+        public static string lbJudgers
+        {
+            get
+            {
+                return ResourceManager.GetString("lbJudgers", resourceCulture);
+            }
+        }/// <summary>
+         ///   Looks up a localized string similar to الخبراء.
+         /// </summary>
+        public static string lbExperts
+        {
+            get
+            {
+                return ResourceManager.GetString("lbExperts", resourceCulture);
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to مزاول.
         /// </summary>

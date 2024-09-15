@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YGuJ/EiJNRFiHIQ/Mt6WnDqJ0LLmoz8jrh/J9ExX5U8=",
+  "Hash": "vGPTD3swY+kUOeFpRp/2j+CgVImuj4WH+5NNLsl5xQY=",
   "Source": "Aadl",
   "BasePath": "_content/Aadl",
   "Mode": "Default",
@@ -93969,6 +93969,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Admin\\assets\\video\\video2.mp4"
+    },
+    {
+      "Identity": "C:\\Users\\XIGMATEK\\Documents\\Project\\Aadl\\wwwroot\\Admin\\css\\account.css",
+      "SourceId": "Aadl",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\XIGMATEK\\Documents\\Project\\Aadl\\wwwroot\\",
+      "BasePath": "_content/Aadl",
+      "RelativePath": "Admin/css/account.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Admin\\css\\account.css"
     },
     {
       "Identity": "C:\\Users\\XIGMATEK\\Documents\\Project\\Aadl\\wwwroot\\css\\site.css",

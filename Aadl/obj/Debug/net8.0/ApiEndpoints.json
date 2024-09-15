@@ -1,15 +1,15 @@
 [
   {
-    "ContainingType": "Aadl.ApiController.PractitionerController",
+    "ContainingType": "Aadl.ApiController.PeopleController",
     "Method": "Get",
-    "RelativePath": "api/Practitioner",
+    "RelativePath": "api/People",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.String",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -20,9 +20,9 @@
     ]
   },
   {
-    "ContainingType": "Aadl.ApiController.PractitionerController",
+    "ContainingType": "Aadl.ApiController.PeopleController",
     "Method": "Post",
-    "RelativePath": "api/Practitioner",
+    "RelativePath": "api/People",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -42,9 +42,35 @@
     ]
   },
   {
-    "ContainingType": "Aadl.ApiController.PractitionerController",
+    "ContainingType": "Aadl.ApiController.PeopleController",
+    "Method": "Get",
+    "RelativePath": "api/People/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Aadl.ApiController.PeopleController",
     "Method": "Put",
-    "RelativePath": "api/Practitioner/{id}",
+    "RelativePath": "api/People/{id}",
     "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
@@ -69,9 +95,9 @@
     ]
   },
   {
-    "ContainingType": "Aadl.ApiController.PractitionerController",
+    "ContainingType": "Aadl.ApiController.PeopleController",
     "Method": "Delete",
-    "RelativePath": "api/Practitioner/{id}",
+    "RelativePath": "api/People/{id}",
     "HttpMethod": "DELETE",
     "IsController": true,
     "Order": 0,
@@ -91,9 +117,31 @@
     ]
   },
   {
-    "ContainingType": "Aadl.ApiController.PractitionerController",
+    "ContainingType": "Aadl.ApiController.PractitionerCaseController",
+    "Method": "Post",
+    "RelativePath": "api/PractitionerCase",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "value",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Aadl.ApiController.PractitionerCaseController",
     "Method": "Get",
-    "RelativePath": "api/Practitioner/Cases/{id}",
+    "RelativePath": "api/PractitionerCase/{id}",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -105,6 +153,55 @@
       }
     ],
     "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Aadl.ApiController.PractitionerCaseController",
+    "Method": "Put",
+    "RelativePath": "api/PractitionerCase/{id}",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "value",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Aadl.ApiController.PractitionerCaseController",
+    "Method": "Delete",
+    "RelativePath": "api/PractitionerCase/{id}",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
   },
   {
     "ContainingType": "Aadl.ApiController.ValuesController",
